@@ -15,6 +15,14 @@ Rails.application.routes.draw do
   patch '/pets/:id', to: 'pets#update'
   delete '/pets/:id', to: 'pets#destroy'
 
+  get '/applications', to: 'applications#index'
+  get '/applications/new', to: 'applications#new'
+  get '/applications/:id', to: 'applications#show'
+  post '/applications', to: 'applications#create'
+  get '/applications/:id/edit', to: 'applications#edit'
+  patch '/applications/:id', to: 'applications#update'
+  delete '/applications/:id', to: 'applications#destroy'
+
   get '/veterinary_offices', to: 'veterinary_offices#index'
   get '/veterinary_offices/new', to: 'veterinary_offices#new'
   get '/veterinary_offices/:id', to: 'veterinary_offices#show'
@@ -28,14 +36,6 @@ Rails.application.routes.draw do
   get '/veterinarians/:id/edit', to: 'veterinarians#edit'
   patch '/veterinarians/:id', to: 'veterinarians#update'
   delete '/veterinarians/:id', to: 'veterinarians#destroy'
-
-  get '/applications', to: 'applications#index'
-  get '/applications/new', to: 'applications#new'
-  get '/applications/:id', to: 'applications#show'
-  post '/applications', to: 'applications#create'
-  get '/applications/:id/edit', to: 'applications#edit'
-  patch '/applications/:id', to: 'applications#update'
-  delete '/applications/:id', to: 'applications#destroy'
 
   get '/shelters/:shelter_id/pets', to: 'shelters#pets'
   get '/shelters/:shelter_id/pets/new', to: 'pets#new'

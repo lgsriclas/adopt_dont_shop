@@ -1,6 +1,6 @@
 class ApplicationsController < ApplicationController
   def index
-
+    @applications = Application.all
   end
 
   def show
@@ -16,7 +16,7 @@ class ApplicationsController < ApplicationController
     if application.save
       redirect_to "/applications/#{application.id}"
     else
-      redirect_to "/pets/"
+      redirect_to "/applications/new"
     end
   end
 
