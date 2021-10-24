@@ -31,6 +31,9 @@ Rails.application.routes.draw do
 
   get '/applications', to: 'applications#index'
   get '/applications/:id', to: 'applications#show'
+  get '/applications/:id/edit', to: 'applications#edit'
+  patch '/applications/:id', to: 'applications#update'
+  delete '/applications/:id', to: 'applications#destroy'
 
   get '/shelters/:shelter_id/pets', to: 'shelters#pets'
   get '/shelters/:shelter_id/pets/new', to: 'pets#new'
