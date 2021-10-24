@@ -13,7 +13,23 @@ RSpec.describe 'application creation' do
       expect(find('form')).to have_content('Name')
       expect(find('form')).to have_content('Address')
       expect(find('form')).to have_content('Home description')
-      expect(find('form')).to have_content('Status')
+    end
+  end
+
+  describe 'the application create' do
+    context 'given valid data' do
+      it 'creates the application and redirects to the application show page' do
+        visit "/applications/new"
+
+        fill_in 'Name', with: 'Larry Sanders'
+        fill_in 'Address', with: '22 Shadowbrook Way Mendham, NJ 07945'
+        fill_in 'Home description', with: 'My home is nice!'
+        click_button 'Save'
+        expect(page).to have_current_path(
+          "/applications/#{@application.id}"
+        )
+        expect(page).to have_content('Larry Sanders')
+      end
     end
   end
 end

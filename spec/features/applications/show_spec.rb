@@ -9,6 +9,5 @@ RSpec.describe 'the application show' do
     expect(page).to have_content(application.name)
     expect(page).to have_content(application.address)
     expect(page).to have_content(application.home_description)
-    expect(page).to have_content(application.status)
   end
 end

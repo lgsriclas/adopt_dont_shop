@@ -3,10 +3,6 @@ class ApplicationsController < ApplicationController
     @applications = Application.all
   end
 
-  def show
-    @application = Application.find(params[:id])
-  end
-
   def new
   end
 
@@ -17,7 +13,13 @@ class ApplicationsController < ApplicationController
       redirect_to "/applications/#{application.id}"
     else
       redirect_to "/applications/new"
+      flash[:alert] = "Error: #{error_message(application.errors)}"
+
     end
+  end
+
+  def show
+    @application = Application.find(params[:id])
   end
 
   def edit
