@@ -1,10 +1,11 @@
 class Application < ApplicationRecord
   validates :name, presence: true
   validates :address, presence: true
+  validates :home_description, presence: true
   has_many :pet_applications
   has_many :pets, through: :pet_applications
 
-  def status 
+  def status
     "Pending"
   end
 end
