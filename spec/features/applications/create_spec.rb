@@ -25,7 +25,7 @@ RSpec.describe 'application creation' do
         fill_in 'Address', with: '22 Shadowbrook Way Mendham, NJ 07945'
         fill_in 'Home description', with: 'My home is nice!'
         click_button 'Save'
-        
+
         expect(page).to have_current_path("/applications/#{@application.id}")
         expect(page).to have_content('Larry Sanders')
       end
