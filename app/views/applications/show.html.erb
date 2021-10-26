@@ -16,7 +16,9 @@
 <% if params[:search].present? %>
   <% @pets.each do |pet| %>
     <%= pet.name %>
-    Adopt this pet: <%= 
+    <form action="/applications/<%=@application.id%>"
+      <input type ="hidden" id="pet" name="pet" value=<%= "pet.id" %> />
+      <input type ="submit" value="Adopt this pet">
     <br/>
   <% end %>
 <% end %>
