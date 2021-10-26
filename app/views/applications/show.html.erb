@@ -12,3 +12,10 @@
   <%= f.submit "Search" %>
 <% end %>
 
+<br/>
+<% if params[:search].present? %>
+  <% @pets.each do |pet| %>
+    <%= pet.name %>
+    <br/>
+  <% end %>
+<% end %>
