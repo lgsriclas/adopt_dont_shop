@@ -3,26 +3,24 @@ class ApplicationsController < ApplicationController
     @applications = Application.all
   end
 
-  def new
-  end
-
-  def create
-    application = Application.new(application_params)
-
-    if application.save
-      redirect_to "/applications/#{application.id}"
-    else
-      redirect_to "/applications/new"
-      flash[:alert] = "Error: #{error_message(application.errors)}"
-    end
-  end
-
   def show
     @application = Application.find(params[:id])
     if params[:search].present?
       @pets = Pet.search(params[:search])
-    # else
-    #   @pets = Pet.adoptable
+    end
+  end
+
+  def new
+  end
+
+  def create
+    @application = Application.new(application_params)
+
+    if @application.save
+      redirect_to "/applications/#{application.id}"
+    else
+      redirect_to "/applications/new"
+      flash[:alert] = "Error: #{error_message(application.errors)}"
     end
   end
 
@@ -31,12 +29,11 @@ class ApplicationsController < ApplicationController
   end
 
   def update
-    application = Application.find(params[:id])
-    if application.update(application_params)
-      redirect_to "/applications/#{application.id}"
-    else
-      redirect_to "/applications/#{application.id}/edit"
-    end
+    @application = Application.find(params[:id])
+
+    application.update(application_params)
+    redirect_to "/applications/#{application.id}"
+
   end
 
   def destroy
@@ -47,6 +44,6 @@ class ApplicationsController < ApplicationController
   private
 
   def application_params
-    params.permit(:id, :name, :age, :address, :home_description, :status, :pet_id)
+    params.permit(:id, :name, :address, :home_description, :status)
   end
 end

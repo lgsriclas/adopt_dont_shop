@@ -23,5 +23,6 @@ RSpec.describe 'the application show' do
     click_on("Search")
 
     expect(page).to have_content(pet_2.name)
+    expect(page).to have_button("Adopt this pet")
   end
 end
