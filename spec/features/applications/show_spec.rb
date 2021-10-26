@@ -12,10 +12,16 @@ RSpec.describe 'the application show' do
 
   it "can search for adoptable pets" do
     application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "Pending")
+    pet_2 = Pet.create(adoptable: true, age: 3, breed: 'doberman', name: 'Lobster')
 
     visit "/applications/#{application.id}"
 
     expect(page).to have_content("Add a pet to this application:")
     expect(page).to have_button("Search")
+
+    fill_in 'Search', with: "Lobster"
+    click_on("Search")
+
+    expect(page).to have_content(pet_2.name)
   end
 end
