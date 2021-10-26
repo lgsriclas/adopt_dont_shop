@@ -5,7 +5,11 @@ class Application < ApplicationRecord
   has_many :pet_applications
   has_many :pets, through: :pet_applications
 
-  def status
-    "Pending"
+  after_initialize do |application|
+     application.status = 'Pending'  #if !application.status
+   end
+
+  after_update do |application|
+    application.status = 'Pending'  #if !application.status
   end
 end
