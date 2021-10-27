@@ -5,8 +5,13 @@ class ApplicationsController < ApplicationController
 
   def show
     @application = Application.find(params[:id])
+
     if params[:search].present?
       @pets = Pet.search(params[:search])
+    end
+
+    if params[:pet].present?
+      @pet_applications = PetApplications.create!(params[:pet_id])
     end
   end
 
@@ -33,7 +38,6 @@ class ApplicationsController < ApplicationController
 
     application.update(application_params)
     redirect_to "/applications/#{application.id}"
-
   end
 
   def destroy

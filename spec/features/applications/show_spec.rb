@@ -8,11 +8,15 @@ RSpec.describe 'the application show' do
     expect(page).to have_content(application.name)
     expect(page).to have_content(application.address)
     expect(page).to have_content(application.home_description)
+    expect(page).to have_content(application.status)
+    expect(page).to have_content("Pets")
   end
 
   it "can search for adoptable pets" do
     application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "Pending")
-    pet_2 = Pet.create(adoptable: true, age: 3, breed: 'doberman', name: 'Lobster')
+    shelter_2 = Shelter.create(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+    shelter_2.pets.create(name: 'Lobster', breed: 'doberman', age: 3, adoptable: true)
+
 
     visit "/applications/#{application.id}"
 
@@ -20,9 +24,24 @@ RSpec.describe 'the application show' do
     expect(page).to have_button("Search")
 
     fill_in 'Search', with: "Lobster"
-    click_on("Search")
+    click_button("Search")
 
-    expect(page).to have_content(pet_2.name)
+    expect(page).to have_content("Lobster")
     expect(page).to have_button("Adopt this pet")
+  end
+
+  it 'can add pets to an application' do
+    application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "Pending")
+    shelter_2 = Shelter.create(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+    shelter_2.pets.create(name: 'Lobster', breed: 'doberman', age: 3, adoptable: true)
+
+    visit "/applications/#{application.id}"
+
+    fill_in 'Search', with: "Lobster"
+    click_button("Search")
+    click_button("Adopt this pet")
+
+    expect(page).to have_content("Lobster")
+
   end
 end

@@ -6,10 +6,10 @@ class Application < ApplicationRecord
   has_many :pets, through: :pet_applications
 
   after_initialize do |application|
-     application.status = 'Pending'  #if !application.status
+     application.status = 'In Progress' if !application.status
    end
 
   after_update do |application|
-    application.status = 'Pending'  #if !application.status
+    application.status = 'Pending' if !application.status
   end
 end
