@@ -3,15 +3,16 @@
 <h3>Home Description: </h3><%= @application.home_description %>
 <h3>Status: </h3><%= @application.status %>
 <h3>Pets: </h3>
-<div
+<div>
   <% @application.pets.each do |pet| %>
-    <a href="/pets/<%pet.id%>"><%=pet.name%></a><br/>
+    <a href="/pets/<%=pet.id%>"><%=pet.name%></a><br/>
   <% end %>
 </div>
 <br/>
 <br/>
 
 <h3>Add a pet to this application:</h3>
+
 <%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |f| %>
   <%= f.label :search %>
   <%= f.text_field :search %>
@@ -22,19 +23,24 @@
 <% if params[:search].present? %>
   <% @pets.each do |pet| %>
     <%= pet.name %>
-    <form action="/applications/<%=@application.id%>"
-      <input type ="hidden" id="pet" name="pet" value=<%= "pet.id" %> />
-      <input type ="submit" value="Adopt this pet">
-    </form>
-    <br/>
+    <%= form_with url: "/pet_applications", method: :post, local: true do |f| %>
+      <%= f.hidden_field :pet, :value => pet.id %>
+      <%= f.hidden_field :application, :value => @application.id %>
+      <%= f.hidden_field :status, value: 'In Progress' %>
+      <%= f.submit "Adopt this pet"%>
+    <% end %>
   <% end %>
 <% end %>
 
-<% if params[:pet].present? %>
+<% if !@application.pets.empty? %>
   <h3>Submit Your Application</h3>
   <p>Please describe why you would make a good pet owner:</p>
   <%= form_with url: "/applications/#{@application.id}", method: :patch, local: true do |f| %>
-    <%= f.text_area :description, size: '40x5'%><br/>
+    <%= f.hidden_field :status, value: 'Pending' %>
+    <%= f.text_area :description, size: '40x5'%>
+    <br/>
+    <br/>
     <%= f.submit "Submit Application" %>
   <% end %>
 <% end %>
+

@@ -8,7 +8,9 @@ RSpec.describe Application, type: :model do
     expect(larry.name).to eq("Larry Sanders")
     expect(leslie.name).to eq("Leslie Knope")
   end
+
   describe "relationships" do
-    it { should have_many :pets }
+    it { should have_many(:pet_applications) }
+    it { should have_many(:pets).through(:pet_applications) }
   end
 end
