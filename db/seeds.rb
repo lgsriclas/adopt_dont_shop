@@ -26,6 +26,6 @@
 @vet_office_3.veterinarians.create(name: 'John', on_call: true, review_rating: 9)
 @vet_office_3.veterinarians.create(name: 'Jim', on_call: true, review_rating: 8)
 
-@application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great.")
-@application = Application.create(name: 'Leslie Knope', address: '2358 Highland Ave Pawnee, IN 47906', home_description: "Dog friendly.")
+@larry = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great.")
+@leslie = Application.create(name: 'Leslie Knope', address: '2358 Highland Ave Pawnee, IN 47906', home_description: "Dog friendly.")
 
