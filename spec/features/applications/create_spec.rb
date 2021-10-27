@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'application creation' do
   before(:each) do
-    @larry = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "Pending")
+    larry = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "Pending")
   end
 
   describe 'the application new' do
