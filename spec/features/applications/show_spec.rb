@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe 'the application show' do
+RSpec.describe 'the application show page' do
   it "shows the application and all it's attributes" do
-    application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "Pending")
+    application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "In Progress")
 
     visit "/applications/#{application.id}"
     expect(page).to have_content(application.name)
@@ -13,10 +13,10 @@ RSpec.describe 'the application show' do
   end
 
   it "can search for adoptable pets" do
-    application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "Pending")
+    application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "In Progress")
     shelter_2 = Shelter.create(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+    shelter_2.pets.create(name: 'Beethoven', breed: 'saint bernard', age: 2, adoptable: false)
     shelter_2.pets.create(name: 'Lobster', breed: 'doberman', age: 3, adoptable: true)
-
 
     visit "/applications/#{application.id}"
 
@@ -28,11 +28,30 @@ RSpec.describe 'the application show' do
 
     expect(page).to have_content("Lobster")
     expect(page).to have_button("Adopt this pet")
+    expect(page).to_not have_content("Beethoven")
+  end
+
+  it 'can search using partials' do
+    application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "In Progress")
+    shelter_2 = Shelter.create(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+    shelter_2.pets.create(name: 'Beethoven', breed: 'saint bernard', age: 2, adoptable: false)
+    shelter_2.pets.create(name: 'Lobster', breed: 'doberman', age: 3, adoptable: true)
+
+    visit "/applications/#{application.id}"
+
+    expect(page).to have_content("Add a pet to this application:")
+    expect(page).to have_button("Search")
+
+    fill_in 'Search', with: "Lo"
+    click_button("Search")
+
+    expect(page).to have_content("Lobster")
   end
 
   it 'can add pets to an application' do
-    application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "Pending")
+    application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "In Progress")
     shelter_2 = Shelter.create(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+    shelter_2.pets.create(name: 'Beethoven', breed: 'saint bernard', age: 2, adoptable: false)
     shelter_2.pets.create(name: 'Lobster', breed: 'doberman', age: 3, adoptable: true)
 
     visit "/applications/#{application.id}"
@@ -41,7 +60,30 @@ RSpec.describe 'the application show' do
     click_button("Search")
     click_button("Adopt this pet")
 
-    expect(page).to have_content("Lobster")
+    expect(page).to have_content("Submit Your Application")
+    expect(page).to have_content("Please describe why you would make a good pet owner:")
+    expect(page).to have_link("Lobster")
+    expect(page).to_not have_link("Beethoven")
+    expect(page).to have_button("Search")
+    expect(page).to have_button("Submit Application")
+  end
 
+  it 'can submit an application' do
+    application = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great", status: "In Progress")
+    shelter_2 = Shelter.create(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+    shelter_2.pets.create(name: 'Beethoven', breed: 'saint bernard', age: 2, adoptable: false)
+    shelter_2.pets.create(name: 'Lobster', breed: 'doberman', age: 3, adoptable: true)
+
+    visit "/applications/#{application.id}"
+
+    fill_in 'Search', with: "Lobster"
+    click_button("Search")
+    click_button("Adopt this pet")
+    fill_in 'description', with: "Because I'm the best!"
+    click_button("Submit Application")
+
+    expect(page).to have_content("Pending")
+    expect(page).to_not have_content("In Progress")
+    expect(page).to_not have_content("Add a pet to this application:")
   end
 end

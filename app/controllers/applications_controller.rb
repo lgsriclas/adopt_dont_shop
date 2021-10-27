@@ -9,10 +9,6 @@ class ApplicationsController < ApplicationController
     if params[:search].present?
       @pets = Pet.search(params[:search])
     end
-
-    if params[:pet].present?
-      @pet_applications = PetApplications.create!(params[:pet_id])
-    end
   end
 
   def new
@@ -36,8 +32,8 @@ class ApplicationsController < ApplicationController
   def update
     @application = Application.find(params[:id])
 
-    application.update(application_params)
-    redirect_to "/applications/#{application.id}"
+    @application.update(status: "Pending")
+    redirect_to "/applications/#{@application.id}"
   end
 
   def destroy
@@ -48,6 +44,6 @@ class ApplicationsController < ApplicationController
   private
 
   def application_params
-    params.permit(:id, :name, :address, :home_description, :status)
+    params.permit(:id, :name, :address, :home_description)
   end
 end

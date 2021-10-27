@@ -8,8 +8,4 @@ class Application < ApplicationRecord
   after_initialize do |application|
      application.status = 'In Progress' if !application.status
    end
-
-  after_update do |application|
-    application.status = 'Pending' if !application.status
-  end
 end

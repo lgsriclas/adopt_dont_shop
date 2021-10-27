@@ -8,7 +8,19 @@ RSpec.describe Application, type: :model do
     expect(larry.name).to eq("Larry Sanders")
     expect(leslie.name).to eq("Leslie Knope")
   end
-  describe "relationships" do
-    it { should have_many :pets }
+
+  describe 'relationships' do
+    it { should have_many(:pet_applications) }
+    it { should have_many(:pets).through(:pet_applications) }
+  end
+
+  describe 'status' do
+    it 'starts as in progress' do
+      larry = Application.create(name: 'Larry Sanders', address: '22 Shadowbrook Way Mendham, NJ 07945', home_description: "Looks great.")
+      leslie = Application.create(name: 'Leslie Knope', address: '2358 Highland Ave Pawnee, IN 47906', home_description: "Dog friendly.")
+
+      expect(larry.status).to eq("In Progress")
+      expect(leslie.status).to eq("In Progress")
+    end
   end
 end
